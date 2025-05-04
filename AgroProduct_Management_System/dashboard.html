@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agro Product Management System - Dashboard</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        .modal-content {
+            overflow-y: auto;
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard-container">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar">
+            <div class="logo">
+                <h2><i class="fas fa-leaf"></i> APMS</h2>
+            </div>
+            <div class="user-info">
+                <div class="user-avatar">
+                    <i class="fas fa-user-circle"></i>
+                </div>
+                <div class="user-name" id="user-name">Farmer Name</div>
+            </div>
+            <nav class="main-nav">
+                <ul>
+                    <li class="active"><a href="#dashboard-section" data-section="dashboard-section"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+                    <li><a href="#profile-section" data-section="profile-section"><i class="fas fa-user"></i> Profile</a></li>
+                    <li><a href="#inventory-section" data-section="inventory-section"><i class="fas fa-warehouse"></i> Inventory</a></li>
+                    <li><a href="#farming-records-section" data-section="farming-records-section"><i class="fas fa-seedling"></i> Farming Records</a></li>
+                    <li><a href="#notifications-section" data-section="notifications-section"><i class="fas fa-bell"></i> Notifications</a></li>
+                    <li><a href="#feedback-section" data-section="feedback-section"><i class="fas fa-comment"></i> Feedback</a></li>
+                </ul>
+            </nav>
+            <div class="logout">
+                <button id="logout-btn"><i class="fas fa-sign-out-alt"></i> Logout</button>
+            </div>
+        </aside>
+
+        <!-- Main Content Area -->
+        <main class="main-content">
+            <header class="top-bar">
+                <button class="menu-toggle" id="menu-toggle">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <div class="date-time" id="date-time">April 8, 2025 - 14:00</div>
+            </header>
+
+            <!-- Dashboard Section -->
+            <section id="dashboard-section" class="content-section active">
+                <h1>Dashboard</h1>
+                <div class="dashboard-stats">
+                    <div class="stat-card">
+                        <div class="stat-icon"><i class="fas fa-box"></i></div>
+                        <div class="stat-info">
+                            <h3>Total Products</h3>
+                            <p id="total-products">0</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon"><i class="fas fa-seedling"></i></div>
+                        <div class="stat-info">
+                            <h3>Active Crops</h3>
+                            <p id="active-crops">0</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon"><i class="fas fa-chart-line"></i></div>
+                        <div class="stat-info">
+                            <h3>Total Value</h3>
+                            <p id="total-value">$0.00</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="recent-activity">
+                    <h2>Recent Activity</h2>
+                    <div class="activity-list" id="activity-list">
+                        <!-- Activity items will be added dynamically -->
+                        <p class="empty-state">No recent activities to display.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Profile Section -->
+            <section id="profile-section" class="content-section">
+                <h1>Farmer Profile</h1>
+                <div class="profile-container">
+                    <div class="profile-header">
+                        <div class="profile-avatar">
+                            <i class="fas fa-user-circle"></i>
+                        </div>
+                        <div class="profile-title">
+                            <h2 id="profile-name">Farmer Name</h2>
+                            <p id="profile-email">farmer@example.com</p>
+                        </div>
+                    </div>
+                    <div class="profile-details">
+                        <form id="profile-form">
+                            <div class="form-group">
+                                <label for="profile-fullname"><i class="fas fa-user"></i> Full Name</label>
+                                <input type="text" id="profile-fullname" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="profile-phone"><i class="fas fa-phone"></i> Phone Number</label>
+                                <input type="tel" id="profile-phone" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="profile-address"><i class="fas fa-map-marker-alt"></i> Address</label>
+                                <textarea id="profile-address" required></textarea>
+                            </div>
+                            <div class="form-actions">
+                                <button type="submit" class="btn btn-primary">Update Profile</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Inventory Section -->
+            <section id="inventory-section" class="content-section">
+                <h1>Inventory Management</h1>
+                <div class="inventory-actions">
+                    <button id="add-product-btn" class="btn btn-primary"><i class="fas fa-plus"></i> Add New Product</button>
+                </div>
+                <div class="inventory-list">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Product Name</th>
+                                <th>Category</th>
+                                <th>Quantity</th>
+                                <th>Unit</th>
+                                <th>Price (per unit)</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="product-list">
+                            <!-- Products will be added dynamically -->
+                        </tbody>
+                    </table>
+                    <p id="no-products" class="empty-state">No products in inventory. Add your first product!</p>
+                </div>
+
+                <!-- Add/Edit Product Modal -->
+                <div id="product-modal" class="modal">
+                    <div class="modal-content">
+                        <span class="close">&times;</span>
+                        <h2 id="modal-title">Add New Product</h2>
+                        <form id="product-form">
+                            <input type="hidden" id="product-id">
+                            <div class="form-group">
+                                <label for="product-name">Product Name</label>
+                                <input type="text" id="product-name" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="product-category">Category</label>
+                                <select id="product-category" required>
+                                    <option value="">Select Category</option>
+                                    <option value="Grains">Grains</option>
+                                    <option value="Vegetables">Vegetables</option>
+                                    <option value="Fruits">Fruits</option>
+                                    <option value="Dairy">Dairy</option>
+                                    <option value="Other">Other</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="product-quantity">Quantity</label>
+                                <input type="number" id="product-quantity" min="0" step="0.01" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="product-unit">Unit</label>
+                                <select id="product-unit" required>
+                                    <option value="">Select Unit</option>
+                                    <option value="kg">Kilograms (kg)</option>
+                                    <option value="ton">Tons</option>
+                                    <option value="liter">Liters</option>
+                                    <option value="piece">Pieces</option>
+                                    <option value="dozen">Dozen</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="product-price">Price (per unit)</label>
+                                <input type="number" id="product-price" min="0" step="0.01" required>
+                            </div>
+                            <div class="form-actions">
+                                <button type="submit" class="btn btn-primary">Save Product</button>
+                                <button type="button" class="btn btn-secondary" id="cancel-product">Cancel</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Farming Records Section -->
+            <section id="farming-records-section" class="content-section">
+                <h1>Farming Records</h1>
+                <div class="record-actions">
+                    <button id="add-record-btn" class="btn btn-primary"><i class="fas fa-plus"></i> Add New Record</button>
+                </div>
+                <div class="records-list">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Crop Type</th>
+                                <th>Area (acres)</th>
+                                <th>Planting Date</th>
+                                <th>Expected Harvest</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="record-list">
+                            <!-- Records will be added dynamically -->
+                        </tbody>
+                    </table>
+                    <p id="no-records" class="empty-state">No farming records available. Add your first record!</p>
+                </div>
+
+                <!-- Add/Edit Record Modal -->
+                <div id="record-modal" class="modal">
+                    <div class="modal-content">
+                        <span class="close">&times;</span>
+                        <h2 id="record-modal-title">Add New Farming Record</h2>
+                        <form id="record-form">
+                            <input type="hidden" id="record-id">
+                            <div class="form-group">
+                                <label for="crop-type">Crop Type</label>
+                                <input type="text" id="crop-type" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="crop-area">Area (acres)</label>
+                                <input type="number" id="crop-area" min="0.1" step="0.1" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="planting-date">Planting Date</label>
+                                <input type="date" id="planting-date" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="expected-harvest">Expected Harvest Date</label>
+                                <input type="date" id="expected-harvest" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="crop-status">Status</label>
+                                <select id="crop-status" required>
+                                    <option value="">Select Status</option>
+                                    <option value="Planted">Planted</option>
+                                    <option value="Growing">Growing</option>
+                                    <option value="Ready to Harvest">Ready to Harvest</option>
+                                    <option value="Harvested">Harvested</option>
+                                </select>
+                            </div>
+                            <div class="form-actions">
+                                <button type="submit" class="btn btn-primary">Save Record</button>
+                                <button type="button" class="btn btn-secondary" id="cancel-record">Cancel</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Notifications Section -->
+            <section id="notifications-section" class="content-section">
+                <h1>Notifications</h1>
+                <div class="notifications-list" id="notifications-list">
+                    <!-- Notifications will be added dynamically -->
+                </div>
+            </section>
+
+            <!-- Feedback Section -->
+            <section id="feedback-section" class="content-section">
+                <h1>Feedback</h1>
+                <div class="feedback-container">
+                    <form id="feedback-form">
+                        <div class="form-group">
+                            <label for="feedback-subject">Subject</label>
+                            <input type="text" id="feedback-subject" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="feedback-message">Message</label>
+                            <textarea id="feedback-message" rows="5" required></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label>Rate your experience</label>
+                            <div class="rating">
+                                <input type="radio" id="star5" name="rating" value="5">
+                                <label for="star5"><i class="fas fa-star"></i></label>
+                                <input type="radio" id="star4" name="rating" value="4">
+                                <label for="star4"><i class="fas fa-star"></i></label>
+                                <input type="radio" id="star3" name="rating" value="3">
+                                <label for="star3"><i class="fas fa-star"></i></label>
+                                <input type="radio" id="star2" name="rating" value="2">
+                                <label for="star2"><i class="fas fa-star"></i></label>
+                                <input type="radio" id="star1" name="rating" value="1">
+                                <label for="star1"><i class="fas fa-star"></i></label>
+                            </div>
+                        </div>
+                        <div class="form-actions">
+                            <button type="submit" class="btn btn-primary">Submit Feedback</button>
+                        </div>
+                    </form>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script src="js/dashboard.js"></script>
+</body>
+</html>
